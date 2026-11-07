@@ -1,0 +1,79 @@
+Kaggle log excerpts for numbers not stored in results/metrics.json
+Copied unchanged from the Kaggle run logs (duplicate log lines removed).
+
+== FINAL RUN (backup notebook, 15 epochs; the models and results in this repository) ==
+Mode: FULL RUN | Model: convnextv2_base.fcmae_ft_in22k_in1k_384
+C=0.003: validation top-1 0.1877
+C=0.01: validation top-1 0.1963
+C=0.03: validation top-1 0.1877
+C=0.1: validation top-1 0.1853
+C=0.3: validation top-1 0.1804
+Saved models/classical.npz; validation top-1 0.1963
+Batch size 20: 92% of GPU memory
+Batch size 16: 74% of GPU memory
+Using batch size 16, accumulation 2
+epoch 1/15 loss 4.786 val_top1 0.0196 val_top5 0.0736 elapsed 8.0 min
+epoch 2/15 loss 3.389 val_top1 0.1730 val_top5 0.4356 elapsed 16.0 min
+epoch 3/15 loss 2.586 val_top1 0.5718 val_top5 0.8712 elapsed 23.9 min
+epoch 4/15 loss 2.309 val_top1 0.8012 val_top5 0.9632 elapsed 31.9 min
+epoch 5/15 loss 2.043 val_top1 0.8896 val_top5 0.9840 elapsed 39.9 min
+epoch 6/15 loss 1.892 val_top1 0.9166 val_top5 0.9828 elapsed 47.9 min
+epoch 7/15 loss 1.817 val_top1 0.9276 val_top5 0.9865 elapsed 55.9 min
+epoch 8/15 loss 1.755 val_top1 0.9325 val_top5 0.9902 elapsed 63.8 min
+epoch 9/15 loss 1.661 val_top1 0.9411 val_top5 0.9914 elapsed 71.8 min
+epoch 10/15 loss 1.612 val_top1 0.9460 val_top5 0.9914 elapsed 79.8 min
+epoch 11/15 loss 1.572 val_top1 0.9448 val_top5 0.9902 elapsed 87.8 min
+epoch 12/15 loss 1.504 val_top1 0.9509 val_top5 0.9902 elapsed 95.8 min
+epoch 13/15 loss 1.492 val_top1 0.9497 val_top5 0.9902 elapsed 103.7 min
+epoch 14/15 loss 1.486 val_top1 0.9497 val_top5 0.9890 elapsed 111.7 min
+epoch 15/15 loss 1.430 val_top1 0.9472 val_top5 0.9890 elapsed 119.7 min
+Best validation top-1: 0.9509
+Classifier epochs finished: 15/15
+ONNX vs PyTorch maximum logit difference: 0.000001
+classifier_fp32.onnx: 351.8 MB
+classifier_int8_dynamic.onnx: 89.3 MB
+classifier_int8_static.onnx: 90.0 MB
+detector_coco.onnx: 10.7 MB
+detector_finetuned.onnx: 10.6 MB
+detector_coco.onnx {'images': 815, 'mean_iou': 0.9387872361876766, 'median_iou': 0.9558475378787878, 'iou_at_least_0_5': 0.9938650306748467, 'no_detection_rate': 0.0036809815950920245, 'ap50': 0.8510775382519185, 'map50_95': 0.773832899414026}
+detector_finetuned.onnx {'images': 815, 'mean_iou': 0.9468056486499913, 'median_iou': 0.9626867526785492, 'iou_at_least_0_5': 0.996319018404908, 'no_detection_rate': 0.0, 'ap50': 0.9888858935398488, 'map50_95': 0.9194680327735242}
+Temperature 0.756; validation top-1 0.9448
+Fusion weight -> validation top-1: {0.0: 0.9447852760736196, 0.02: 0.9460122699386503, 0.05: 0.943558282208589, 0.1: 0.9411042944785276, 0.2: 0.9411042944785276, 0.3: 0.9337423312883436}
+Thresholds: {'full': 0.73, 'model': 0.7, 'make': 0.0}
+classifier_int8_dynamic.onnx: validation top-1 0.9560 (fp32 0.9560)
+classifier_int8_static.onnx: validation top-1 0.0040 (fp32 0.9560)
+Deploying classifier_int8_dynamic.onnx with detector detector_finetuned.onnx
+Created /kaggle/working/p5_outputs.zip: 117.9 MB, 7.02 h used
+
+== EARLIER RUN (30 epochs; used only to justify the 15-epoch schedule; its evaluation did not finish) ==
+epoch 1/30 loss 4.786 val_top1 0.0196 val_top5 0.0736 elapsed 8.0 min
+epoch 2/30 loss 3.389 val_top1 0.1730 val_top5 0.4356 elapsed 16.1 min
+epoch 3/30 loss 2.581 val_top1 0.5681 val_top5 0.8712 elapsed 24.2 min
+epoch 4/30 loss 2.313 val_top1 0.8049 val_top5 0.9607 elapsed 32.3 min
+epoch 5/30 loss 2.083 val_top1 0.8871 val_top5 0.9767 elapsed 40.4 min
+epoch 6/30 loss 1.945 val_top1 0.9153 val_top5 0.9840 elapsed 48.5 min
+epoch 7/30 loss 1.888 val_top1 0.9276 val_top5 0.9877 elapsed 56.6 min
+epoch 8/30 loss 1.849 val_top1 0.9288 val_top5 0.9853 elapsed 64.7 min
+epoch 9/30 loss 1.781 val_top1 0.9337 val_top5 0.9877 elapsed 72.8 min
+epoch 10/30 loss 1.748 val_top1 0.9399 val_top5 0.9877 elapsed 80.9 min
+epoch 11/30 loss 1.728 val_top1 0.9411 val_top5 0.9902 elapsed 89.0 min
+epoch 12/30 loss 1.661 val_top1 0.9448 val_top5 0.9926 elapsed 97.1 min
+epoch 13/30 loss 1.645 val_top1 0.9423 val_top5 0.9926 elapsed 105.2 min
+epoch 14/30 loss 1.621 val_top1 0.9472 val_top5 0.9926 elapsed 113.3 min
+epoch 15/30 loss 1.531 val_top1 0.9448 val_top5 0.9926 elapsed 121.4 min
+epoch 16/30 loss 1.567 val_top1 0.9460 val_top5 0.9939 elapsed 129.4 min
+epoch 17/30 loss 1.491 val_top1 0.9436 val_top5 0.9926 elapsed 137.5 min
+epoch 18/30 loss 1.458 val_top1 0.9423 val_top5 0.9926 elapsed 145.6 min
+epoch 19/30 loss 1.465 val_top1 0.9423 val_top5 0.9914 elapsed 153.7 min
+epoch 20/30 loss 1.441 val_top1 0.9436 val_top5 0.9914 elapsed 161.8 min
+epoch 21/30 loss 1.414 val_top1 0.9423 val_top5 0.9926 elapsed 169.9 min
+epoch 22/30 loss 1.386 val_top1 0.9411 val_top5 0.9914 elapsed 178.0 min
+epoch 23/30 loss 1.344 val_top1 0.9436 val_top5 0.9902 elapsed 186.1 min
+epoch 24/30 loss 1.366 val_top1 0.9436 val_top5 0.9890 elapsed 194.2 min
+epoch 25/30 loss 1.344 val_top1 0.9436 val_top5 0.9890 elapsed 202.3 min
+epoch 26/30 loss 1.355 val_top1 0.9423 val_top5 0.9890 elapsed 210.4 min
+epoch 27/30 loss 1.352 val_top1 0.9436 val_top5 0.9890 elapsed 218.5 min
+epoch 28/30 loss 1.358 val_top1 0.9423 val_top5 0.9890 elapsed 226.6 min
+epoch 29/30 loss 1.321 val_top1 0.9423 val_top5 0.9890 elapsed 234.7 min
+epoch 30/30 loss 1.322 val_top1 0.9411 val_top5 0.9890 elapsed 242.7 min
+Best validation top-1: 0.9472

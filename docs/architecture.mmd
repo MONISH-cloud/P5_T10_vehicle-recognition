@@ -1,0 +1,26 @@
+flowchart TD
+    A[Uploaded image] --> B["Input checks<br/>load_image: format, size, EXIF rotation"]
+    B --> C["Quality metrics<br/>brightness, contrast, sharpness"]
+    C --> D["Adaptive enhancement<br/>gamma, bilateral, CLAHE, unsharp"]
+    D --> E["YOLO11 vehicle detector<br/>ONNX"]
+    E -->|vehicle found| F["GrabCut box refinement<br/>kept only if IoU at least 0.6"]
+    E -->|nothing found| G["Canny + contour ROI fallback"]
+    F --> H[Crop up to 3 vehicles]
+    G --> H
+    H --> I["ConvNeXt V2 classifier<br/>flip TTA, quantized ONNX if accuracy holds"]
+    H --> J["Classical features + softmax regression<br/>HOG, LBP, colour, geometry"]
+    I --> K["Temperature-scaled probabilities"]
+    K --> L["Log-linear fusion<br/>weight chosen on validation"]
+    J --> L
+    L --> M["Hierarchy roll-up<br/>class, make + model, make"]
+    M --> N{"Threshold for each level<br/>chosen on validation"}
+    N --> O1[Make, model, year]
+    N --> O2["Make, model, years uncertain"]
+    N --> O3[Make only]
+    N --> O4[Abstain: possibly unknown]
+    O1 --> P["Gradio app: boxes, labels, confidence, intermediates, comparison"]
+    O2 --> P
+    O3 --> P
+    O4 --> P
+    G -.->|low confidence| Q[No vehicle message]
+    Q --> P

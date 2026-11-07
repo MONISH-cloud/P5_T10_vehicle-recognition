@@ -1,0 +1,19 @@
+data/
+checkpoints/
+*.pt
+*.onnx
+*.npz
+__pycache__/
+.pytest_cache/
+.env
+results/failures/
+.venv-export/
+yolo11n.pt
+.venv/
+test_photos/
+p5_outputs/
+.DS_Store
+hf_space/
+
+# Demo photos: licences not yet confirmed, so they are kept out of the public repository
+examples/*.jpg

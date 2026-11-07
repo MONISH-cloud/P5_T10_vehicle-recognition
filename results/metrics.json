@@ -1,0 +1,905 @@
+{
+  "partial_run": false,
+  "test_images": 8041,
+  "classifier": "convnextv2_base.fcmae_ft_in22k_in1k_384",
+  "detector_file": "detector_finetuned.onnx",
+  "temperature": 0.7560338627079822,
+  "fusion_beta": 0.02,
+  "detection": {
+    "images": 8041,
+    "mean_iou": 0.9508203368921204,
+    "median_iou": 0.9646798358540037,
+    "iou_at_least_0_5": 0.9981345603780625,
+    "no_detection_rate": 0.0002487252829250093,
+    "ap50": 0.989651188171133,
+    "map50_95": 0.9246368750681452
+  },
+  "ablation": {
+    "Full image, no detector": {
+      "images": 2000,
+      "top1": 0.928,
+      "top5": 0.993,
+      "mean_per_class": 0.9327928847108888,
+      "make_accuracy": 0.9745,
+      "make_model_accuracy": 0.9335
+    },
+    "Ground-truth box (upper bound, not deployable)": {
+      "images": 2000,
+      "top1": 0.941,
+      "top5": 0.9965,
+      "mean_per_class": 0.944827744245077,
+      "make_accuracy": 0.9835,
+      "make_model_accuracy": 0.946
+    },
+    "Detector crop (deep-only baseline)": {
+      "images": 2000,
+      "top1": 0.94,
+      "top5": 0.9955,
+      "mean_per_class": 0.943720937667003,
+      "make_accuracy": 0.984,
+      "make_model_accuracy": 0.945
+    },
+    "Detector + adaptive enhancement": {
+      "images": 2000,
+      "top1": 0.9415,
+      "top5": 0.996,
+      "mean_per_class": 0.9452633861482269,
+      "make_accuracy": 0.9845,
+      "make_model_accuracy": 0.9465
+    },
+    "Detector + GrabCut refinement": {
+      "images": 2000,
+      "top1": 0.938,
+      "top5": 0.995,
+      "mean_per_class": 0.9426055899821064,
+      "make_accuracy": 0.9835,
+      "make_model_accuracy": 0.943
+    },
+    "Detector + flip TTA": {
+      "images": 2000,
+      "top1": 0.939,
+      "top5": 0.9945,
+      "mean_per_class": 0.9427479690852802,
+      "make_accuracy": 0.985,
+      "make_model_accuracy": 0.944
+    },
+    "Detector + classical fusion": {
+      "images": 2000,
+      "top1": 0.94,
+      "top5": 0.9955,
+      "mean_per_class": 0.943877579271013,
+      "make_accuracy": 0.984,
+      "make_model_accuracy": 0.9445
+    },
+    "Full hybrid": {
+      "images": 2000,
+      "top1": 0.9375,
+      "top5": 0.9955,
+      "mean_per_class": 0.9412380374665947,
+      "make_accuracy": 0.983,
+      "make_model_accuracy": 0.9435
+    },
+    "Hybrid without enhancement": {
+      "images": 2000,
+      "top1": 0.938,
+      "top5": 0.9945,
+      "mean_per_class": 0.9422570439702951,
+      "make_accuracy": 0.9845,
+      "make_model_accuracy": 0.9435
+    },
+    "Hybrid without refinement": {
+      "images": 2000,
+      "top1": 0.9415,
+      "top5": 0.995,
+      "mean_per_class": 0.9456055095636586,
+      "make_accuracy": 0.985,
+      "make_model_accuracy": 0.9465
+    },
+    "Hybrid without TTA": {
+      "images": 2000,
+      "top1": 0.9395,
+      "top5": 0.9955,
+      "mean_per_class": 0.9437462904917651,
+      "make_accuracy": 0.983,
+      "make_model_accuracy": 0.9445
+    },
+    "Hybrid without classical fusion": {
+      "images": 2000,
+      "top1": 0.94,
+      "top5": 0.995,
+      "mean_per_class": 0.9433793954820128,
+      "make_accuracy": 0.983,
+      "make_model_accuracy": 0.945
+    }
+  },
+  "ablation_images": 2000,
+  "comparison": {
+    "classical_only": {
+      "images": 8041,
+      "top1": 0.07038925506777764,
+      "top5": 0.1917671931351822,
+      "mean_per_class": 0.07028396215621527,
+      "make_accuracy": 0.15856236786469344,
+      "make_model_accuracy": 0.07188160676532769
+    },
+    "deep_only": {
+      "images": 8041,
+      "top1": 0.945280437756498,
+      "top5": 0.9947767690585748,
+      "mean_per_class": 0.9438022071472271,
+      "make_accuracy": 0.9848277577415744,
+      "make_model_accuracy": 0.9496331302076856
+    },
+    "hybrid": {
+      "images": 8041,
+      "top1": 0.9447829871906479,
+      "top5": 0.9950254943414998,
+      "mean_per_class": 0.9435963178588422,
+      "make_accuracy": 0.9845790324586494,
+      "make_model_accuracy": 0.9492600422832981
+    }
+  },
+  "confidence": {
+    "ece": 0.006408075566377408,
+    "thresholds_used": {
+      "full": 0.73,
+      "model": 0.7,
+      "make": 0.0
+    },
+    "decision_levels": {
+      "full": {
+        "share": 0.9328441736102475,
+        "reported_answer_correct": 0.9744034128782829
+      },
+      "model": {
+        "share": 0.010073373958462879,
+        "reported_answer_correct": 0.7777777777777778
+      },
+      "make": {
+        "share": 0.05708245243128964,
+        "reported_answer_correct": 0.803921568627451
+      },
+      "abstain": {
+        "share": 0.0,
+        "reported_answer_correct": null
+      }
+    },
+    "threshold_curve": [
+      {
+        "threshold": 0.0,
+        "coverage": 1.0,
+        "accuracy": 0.9447829871906479
+      },
+      {
+        "threshold": 0.05,
+        "coverage": 1.0,
+        "accuracy": 0.9447829871906479
+      },
+      {
+        "threshold": 0.1,
+        "coverage": 0.9996269120756125,
+        "accuracy": 0.9451356058721075
+      },
+      {
+        "threshold": 0.15,
+        "coverage": 0.9993781867926875,
+        "accuracy": 0.945370831259333
+      },
+      {
+        "threshold": 0.2,
+        "coverage": 0.99850764830245,
+        "accuracy": 0.9461950429692365
+      },
+      {
+        "threshold": 0.25,
+        "coverage": 0.9973883845292874,
+        "accuracy": 0.9471321695760598
+      },
+      {
+        "threshold": 0.3,
+        "coverage": 0.9956473075488124,
+        "accuracy": 0.948038970771921
+      },
+      {
+        "threshold": 0.35,
+        "coverage": 0.9929113294366372,
+        "accuracy": 0.9491482965931863
+      },
+      {
+        "threshold": 0.4,
+        "coverage": 0.9890560875512996,
+        "accuracy": 0.9515905947441217
+      },
+      {
+        "threshold": 0.45,
+        "coverage": 0.9850764830244995,
+        "accuracy": 0.9541724529731095
+      },
+      {
+        "threshold": 0.5,
+        "coverage": 0.9782365377440617,
+        "accuracy": 0.9581744215611493
+      },
+      {
+        "threshold": 0.55,
+        "coverage": 0.9692824275587614,
+        "accuracy": 0.9626635873749038
+      },
+      {
+        "threshold": 0.6,
+        "coverage": 0.961074493222236,
+        "accuracy": 0.9660973084886129
+      },
+      {
+        "threshold": 0.65,
+        "coverage": 0.9500062181320731,
+        "accuracy": 0.9694986254745386
+      },
+      {
+        "threshold": 0.7,
+        "coverage": 0.9405546573809228,
+        "accuracy": 0.9722332407774693
+      },
+      {
+        "threshold": 0.75,
+        "coverage": 0.9282427558761348,
+        "accuracy": 0.9752143622722401
+      },
+      {
+        "threshold": 0.8,
+        "coverage": 0.9139410521079467,
+        "accuracy": 0.9780922574499932
+      },
+      {
+        "threshold": 0.85,
+        "coverage": 0.8954110185300336,
+        "accuracy": 0.9816666666666667
+      },
+      {
+        "threshold": 0.9,
+        "coverage": 0.8694192264643701,
+        "accuracy": 0.9839794020883994
+      },
+      {
+        "threshold": 0.95,
+        "coverage": 0.8159432906354931,
+        "accuracy": 0.9887212315195855
+      }
+    ]
+  },
+  "subgroups": {
+    "brightness": {
+      "bright (above 0.75)": {
+        "images": 465,
+        "top1": 0.9247311827956989
+      },
+      "dark (below 0.25)": {
+        "images": 700,
+        "top1": 0.9271428571428572
+      },
+      "normal": {
+        "images": 6876,
+        "top1": 0.9479348458406051
+      }
+    },
+    "car_size": {
+      "large (over 300 px)": {
+        "images": 3255,
+        "top1": 0.9508448540706606
+      },
+      "medium (150-300 px)": {
+        "images": 3343,
+        "top1": 0.9413700269219264
+      },
+      "small (under 150 px)": {
+        "images": 1443,
+        "top1": 0.939015939015939
+      }
+    },
+    "box_shape": {
+      "medium box (1.4-1.9)": {
+        "images": 3467,
+        "top1": 0.953850591289299
+      },
+      "narrow box (under 1.4)": {
+        "images": 835,
+        "top1": 0.9425149700598803
+      },
+      "wide box (over 1.9)": {
+        "images": 3739,
+        "top1": 0.9368815191227601
+      }
+    }
+  },
+  "failures": {
+    "errors": 444,
+    "images": 8041,
+    "top_confusions": [
+      [
+        "Audi TTS Coupe 2012 -> Audi TT Hatchback 2011",
+        18
+      ],
+      [
+        "Audi S5 Coupe 2012 -> Audi A5 Coupe 2012",
+        11
+      ],
+      [
+        "Dodge Caliber Wagon 2012 -> Dodge Caliber Wagon 2007",
+        11
+      ],
+      [
+        "Chevrolet Silverado 1500 Hybrid Crew Cab 2012 -> Chevrolet Silverado 1500 Extended Cab 2012",
+        11
+      ],
+      [
+        "Audi V8 Sedan 1994 -> Audi 100 Sedan 1994",
+        11
+      ],
+      [
+        "BMW 6 Series Convertible 2007 -> BMW M6 Convertible 2010",
+        9
+      ],
+      [
+        "Bentley Continental GT Coupe 2012 -> Bentley Continental GT Coupe 2007",
+        9
+      ],
+      [
+        "Audi 100 Sedan 1994 -> Audi V8 Sedan 1994",
+        8
+      ],
+      [
+        "Chevrolet Express Cargo Van 2007 -> Chevrolet Express Van 2007",
+        8
+      ],
+      [
+        "Chevrolet Express Van 2007 -> GMC Savana Van 2012",
+        8
+      ],
+      [
+        "GMC Savana Van 2012 -> Chevrolet Express Van 2007",
+        8
+      ],
+      [
+        "Chevrolet Express Van 2007 -> Chevrolet Express Cargo Van 2007",
+        7
+      ],
+      [
+        "Audi 100 Sedan 1994 -> Audi 100 Wagon 1994",
+        7
+      ],
+      [
+        "Chevrolet Tahoe Hybrid SUV 2012 -> Chevrolet Avalanche Crew Cab 2012",
+        7
+      ],
+      [
+        "Mercedes-Benz Sprinter Van 2012 -> Dodge Sprinter Cargo Van 2009",
+        7
+      ]
+    ],
+    "tag_counts": {
+      "same_make_wrong_model": 284,
+      "wrong_make": 125,
+      "difficult_exposure": 77,
+      "year_only_confusion": 35,
+      "small_vehicle": 8,
+      "wrong_or_missed_box": 2,
+      "blurred": 1
+    },
+    "examples": {
+      "same_make_wrong_model": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02698.jpg",
+          "truth": "Honda Accord Coupe 2012",
+          "predicted": "Honda Accord Sedan 2012",
+          "confidence": 0.9991773686371825,
+          "iou": 0.9694198969538761
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/00082.jpg",
+          "truth": "Audi 100 Sedan 1994",
+          "predicted": "Audi V8 Sedan 1994",
+          "confidence": 0.9976970092576464,
+          "iou": 0.8274607113316791
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02084.jpg",
+          "truth": "GMC Yukon Hybrid SUV 2012",
+          "predicted": "GMC Terrain SUV 2012",
+          "confidence": 0.9972323991605312,
+          "iou": 0.8976521164021164
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/03405.jpg",
+          "truth": "Acura RL Sedan 2012",
+          "predicted": "Acura TL Sedan 2012",
+          "confidence": 0.9972124861817714,
+          "iou": 0.900752508361204
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/00033.jpg",
+          "truth": "Toyota Corolla Sedan 2012",
+          "predicted": "Toyota Camry Sedan 2012",
+          "confidence": 0.9971063650794473,
+          "iou": 0.7902945212192493
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01821.jpg",
+          "truth": "Aston Martin V8 Vantage Coupe 2012",
+          "predicted": "Aston Martin Virage Coupe 2012",
+          "confidence": 0.9969649147696242,
+          "iou": 0.9220990705328524
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06564.jpg",
+          "truth": "Acura TSX Sedan 2012",
+          "predicted": "Acura TL Sedan 2012",
+          "confidence": 0.9966594554463533,
+          "iou": 0.9813123962431493
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07373.jpg",
+          "truth": "Jeep Compass SUV 2012",
+          "predicted": "Jeep Grand Cherokee SUV 2012",
+          "confidence": 0.996333114737215,
+          "iou": 0.9362462075473613
+        }
+      ],
+      "wrong_make": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05250.jpg",
+          "truth": "Dodge Durango SUV 2007",
+          "predicted": "Chrysler Aspen SUV 2009",
+          "confidence": 0.994888959040389,
+          "iou": 0.9225640348560866
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05731.jpg",
+          "truth": "Chrysler Town and Country Minivan 2012",
+          "predicted": "Ram C/V Cargo Van Minivan 2012",
+          "confidence": 0.9834307834420002,
+          "iou": 0.8798391216351656
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06675.jpg",
+          "truth": "Chevrolet Express Cargo Van 2007",
+          "predicted": "GMC Savana Van 2012",
+          "confidence": 0.9776168525354091,
+          "iou": 0.9607193563653573
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07470.jpg",
+          "truth": "GMC Savana Van 2012",
+          "predicted": "Chevrolet Express Van 2007",
+          "confidence": 0.9768083284487182,
+          "iou": 0.9427078083828887
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/03364.jpg",
+          "truth": "GMC Yukon Hybrid SUV 2012",
+          "predicted": "Chevrolet Tahoe Hybrid SUV 2012",
+          "confidence": 0.9730474045361002,
+          "iou": 0.928284789644013
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/03925.jpg",
+          "truth": "Chevrolet Tahoe Hybrid SUV 2012",
+          "predicted": "Cadillac Escalade EXT Crew Cab 2007",
+          "confidence": 0.9729322649958118,
+          "iou": 0.9129363738738738
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/00414.jpg",
+          "truth": "HUMMER H3T Crew Cab 2010",
+          "predicted": "GMC Canyon Extended Cab 2012",
+          "confidence": 0.9434818324362588,
+          "iou": 0.9697192040298073
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/03478.jpg",
+          "truth": "GMC Savana Van 2012",
+          "predicted": "Chevrolet Express Van 2007",
+          "confidence": 0.9328141905596762,
+          "iou": 0.9672548042891225
+        }
+      ],
+      "difficult_exposure": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01587.jpg",
+          "truth": "Honda Odyssey Minivan 2007",
+          "predicted": "Honda Odyssey Minivan 2012",
+          "confidence": 0.9977044477489013,
+          "iou": 0.9805118110236221
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02084.jpg",
+          "truth": "GMC Yukon Hybrid SUV 2012",
+          "predicted": "GMC Terrain SUV 2012",
+          "confidence": 0.9972323991605312,
+          "iou": 0.8976521164021164
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01821.jpg",
+          "truth": "Aston Martin V8 Vantage Coupe 2012",
+          "predicted": "Aston Martin Virage Coupe 2012",
+          "confidence": 0.9969649147696242,
+          "iou": 0.9220990705328524
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07373.jpg",
+          "truth": "Jeep Compass SUV 2012",
+          "predicted": "Jeep Grand Cherokee SUV 2012",
+          "confidence": 0.996333114737215,
+          "iou": 0.9362462075473613
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02012.jpg",
+          "truth": "Bentley Continental GT Coupe 2012",
+          "predicted": "Bentley Continental GT Coupe 2007",
+          "confidence": 0.9957684313878072,
+          "iou": 0.9420403881458169
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07940.jpg",
+          "truth": "Aston Martin V8 Vantage Coupe 2012",
+          "predicted": "Aston Martin Virage Coupe 2012",
+          "confidence": 0.9947649374682112,
+          "iou": 0.9038321610477807
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02885.jpg",
+          "truth": "Chrysler Crossfire Convertible 2008",
+          "predicted": "Chrysler Sebring Convertible 2010",
+          "confidence": 0.9917792598910895,
+          "iou": 0.9767425916050887
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06005.jpg",
+          "truth": "BMW 6 Series Convertible 2007",
+          "predicted": "BMW M6 Convertible 2010",
+          "confidence": 0.9902923780826322,
+          "iou": 0.9336566715049386
+        }
+      ],
+      "year_only_confusion": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01587.jpg",
+          "truth": "Honda Odyssey Minivan 2007",
+          "predicted": "Honda Odyssey Minivan 2012",
+          "confidence": 0.9977044477489013,
+          "iou": 0.9805118110236221
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07635.jpg",
+          "truth": "Honda Odyssey Minivan 2007",
+          "predicted": "Honda Odyssey Minivan 2012",
+          "confidence": 0.9958732981309455,
+          "iou": 0.9418467154222845
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02012.jpg",
+          "truth": "Bentley Continental GT Coupe 2012",
+          "predicted": "Bentley Continental GT Coupe 2007",
+          "confidence": 0.9957684313878072,
+          "iou": 0.9420403881458169
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06604.jpg",
+          "truth": "Dodge Caliber Wagon 2007",
+          "predicted": "Dodge Caliber Wagon 2012",
+          "confidence": 0.9943944915786967,
+          "iou": 0.8918059652572927
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05831.jpg",
+          "truth": "Dodge Caliber Wagon 2012",
+          "predicted": "Dodge Caliber Wagon 2007",
+          "confidence": 0.9769747146759354,
+          "iou": 0.9723738796414853
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06752.jpg",
+          "truth": "Bentley Continental GT Coupe 2012",
+          "predicted": "Bentley Continental GT Coupe 2007",
+          "confidence": 0.9684263576309377,
+          "iou": 0.9126993757499764
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01812.jpg",
+          "truth": "Bentley Continental GT Coupe 2012",
+          "predicted": "Bentley Continental GT Coupe 2007",
+          "confidence": 0.9631836900982412,
+          "iou": 0.9264149356656295
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/01407.jpg",
+          "truth": "Bentley Continental GT Coupe 2012",
+          "predicted": "Bentley Continental GT Coupe 2007",
+          "confidence": 0.9629173947578441,
+          "iou": 0.9142058839642798
+        }
+      ],
+      "wrong_or_missed_box": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/00353.jpg",
+          "truth": "Aston Martin V8 Vantage Convertible 2012",
+          "predicted": "Bugatti Veyron 16.4 Convertible 2009",
+          "confidence": 0.19721298468112552,
+          "iou": 0.18242942601473278
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05320.jpg",
+          "truth": "Maybach Landaulet Convertible 2012",
+          "predicted": "Rolls-Royce Phantom Drophead Coupe Convertible 2012",
+          "confidence": 0.07639103183555351,
+          "iou": 0.07448635206347326
+        }
+      ],
+      "small_vehicle": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/07350.jpg",
+          "truth": "Hyundai Elantra Sedan 2007",
+          "predicted": "BMW 3 Series Sedan 2012",
+          "confidence": 0.7619509862590172,
+          "iou": 0.8182773109243697
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05918.jpg",
+          "truth": "Chevrolet Silverado 1500 Hybrid Crew Cab 2012",
+          "predicted": "Chevrolet Silverado 1500 Extended Cab 2012",
+          "confidence": 0.7273422148118349,
+          "iou": 0.9352562261518894
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02273.jpg",
+          "truth": "Lamborghini Reventon Coupe 2008",
+          "predicted": "Lamborghini Aventador Coupe 2012",
+          "confidence": 0.7121509788315866,
+          "iou": 0.9604511586904805
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/06905.jpg",
+          "truth": "Audi TTS Coupe 2012",
+          "predicted": "Audi TT Hatchback 2011",
+          "confidence": 0.4885122618995569,
+          "iou": 0.9257748028608106
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/04618.jpg",
+          "truth": "Hyundai Veracruz SUV 2012",
+          "predicted": "Audi 100 Wagon 1994",
+          "confidence": 0.29164416061329573,
+          "iou": 0.8647798742138365
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/03762.jpg",
+          "truth": "Volkswagen Golf Hatchback 2012",
+          "predicted": "Hyundai Elantra Touring Hatchback 2012",
+          "confidence": 0.23093370700367458,
+          "iou": 0.9666162227602906
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/00353.jpg",
+          "truth": "Aston Martin V8 Vantage Convertible 2012",
+          "predicted": "Bugatti Veyron 16.4 Convertible 2009",
+          "confidence": 0.19721298468112552,
+          "iou": 0.18242942601473278
+        },
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/05320.jpg",
+          "truth": "Maybach Landaulet Convertible 2012",
+          "predicted": "Rolls-Royce Phantom Drophead Coupe Convertible 2012",
+          "confidence": 0.07639103183555351,
+          "iou": 0.07448635206347326
+        }
+      ],
+      "blurred": [
+        {
+          "path": "/kaggle/input/datasets/rickyyyyyyy/torchvision-stanford-cars/stanford_cars/cars_test/02273.jpg",
+          "truth": "Lamborghini Reventon Coupe 2008",
+          "predicted": "Lamborghini Aventador Coupe 2012",
+          "confidence": 0.7121509788315866,
+          "iou": 0.9604511586904805
+        }
+      ]
+    }
+  },
+  "robustness": {
+    "images": 300,
+    "clean": {
+      "deep_top1": 0.9533333333333334,
+      "hybrid_top1": 0.9466666666666667,
+      "deep_iou": 0.9520444612938419,
+      "hybrid_iou": 0.9088380921006073
+    },
+    "conditions": {
+      "low_light/1": {
+        "deep_top1": 0.95,
+        "hybrid_top1": 0.9466666666666667,
+        "deep_iou": 0.9522904158193014,
+        "hybrid_iou": 0.8963828605424995
+      },
+      "low_light/2": {
+        "deep_top1": 0.9366666666666666,
+        "hybrid_top1": 0.9233333333333333,
+        "deep_iou": 0.9431633965723457,
+        "hybrid_iou": 0.861452712142928
+      },
+      "low_light/3": {
+        "deep_top1": 0.82,
+        "hybrid_top1": 0.71,
+        "deep_iou": 0.7790911882125502,
+        "hybrid_iou": 0.6079849876389407
+      },
+      "overexposure/1": {
+        "deep_top1": 0.95,
+        "hybrid_top1": 0.94,
+        "deep_iou": 0.9489483197950661,
+        "hybrid_iou": 0.9013001345850805
+      },
+      "overexposure/2": {
+        "deep_top1": 0.94,
+        "hybrid_top1": 0.9266666666666666,
+        "deep_iou": 0.945092468609429,
+        "hybrid_iou": 0.8841969712894229
+      },
+      "overexposure/3": {
+        "deep_top1": 0.9133333333333333,
+        "hybrid_top1": 0.9066666666666666,
+        "deep_iou": 0.9326236070972516,
+        "hybrid_iou": 0.8660827664391801
+      },
+      "motion_blur/1": {
+        "deep_top1": 0.9433333333333334,
+        "hybrid_top1": 0.9433333333333334,
+        "deep_iou": 0.9495049439964426,
+        "hybrid_iou": 0.9019566893326085
+      },
+      "motion_blur/2": {
+        "deep_top1": 0.9266666666666666,
+        "hybrid_top1": 0.9166666666666666,
+        "deep_iou": 0.9271402580040452,
+        "hybrid_iou": 0.886795934645581
+      },
+      "motion_blur/3": {
+        "deep_top1": 0.8566666666666667,
+        "hybrid_top1": 0.85,
+        "deep_iou": 0.8987348591776655,
+        "hybrid_iou": 0.8690279161835929
+      },
+      "low_resolution/1": {
+        "deep_top1": 0.9333333333333333,
+        "hybrid_top1": 0.9333333333333333,
+        "deep_iou": 0.9503548602734035,
+        "hybrid_iou": 0.9062633529605828
+      },
+      "low_resolution/2": {
+        "deep_top1": 0.82,
+        "hybrid_top1": 0.83,
+        "deep_iou": 0.9418156376724279,
+        "hybrid_iou": 0.9045394889983076
+      },
+      "low_resolution/3": {
+        "deep_top1": 0.5066666666666667,
+        "hybrid_top1": 0.4866666666666667,
+        "deep_iou": 0.8961966799369164,
+        "hybrid_iou": 0.8731946870448871
+      },
+      "occlusion/1": {
+        "deep_top1": 0.87,
+        "hybrid_top1": 0.88,
+        "deep_iou": 0.9116137884339285,
+        "hybrid_iou": 0.8798730585534306
+      },
+      "occlusion/2": {
+        "deep_top1": 0.7433333333333333,
+        "hybrid_top1": 0.76,
+        "deep_iou": 0.8238378687578285,
+        "hybrid_iou": 0.8134232658512103
+      },
+      "occlusion/3": {
+        "deep_top1": 0.39,
+        "hybrid_top1": 0.39,
+        "deep_iou": 0.68824180928503,
+        "hybrid_iou": 0.6996560520728086
+      },
+      "jpeg/1": {
+        "deep_top1": 0.9466666666666667,
+        "hybrid_top1": 0.94,
+        "deep_iou": 0.9524002045505536,
+        "hybrid_iou": 0.9032115998283388
+      },
+      "jpeg/2": {
+        "deep_top1": 0.9266666666666666,
+        "hybrid_top1": 0.9166666666666666,
+        "deep_iou": 0.9486357439057851,
+        "hybrid_iou": 0.8959929472166276
+      },
+      "jpeg/3": {
+        "deep_top1": 0.8766666666666667,
+        "hybrid_top1": 0.8766666666666667,
+        "deep_iou": 0.9362206233267752,
+        "hybrid_iou": 0.888200945645763
+      },
+      "viewpoint_proxy/1": {
+        "deep_top1": 0.95,
+        "hybrid_top1": 0.9366666666666666,
+        "deep_iou": null,
+        "hybrid_iou": null
+      },
+      "viewpoint_proxy/2": {
+        "deep_top1": 0.95,
+        "hybrid_top1": 0.9366666666666666,
+        "deep_iou": null,
+        "hybrid_iou": null
+      },
+      "viewpoint_proxy/3": {
+        "deep_top1": 0.9433333333333334,
+        "hybrid_top1": 0.9333333333333333,
+        "deep_iou": null,
+        "hybrid_iou": null
+      }
+    }
+  },
+  "efficiency": {
+    "models": {
+      "classifier_fp32.onnx": {
+        "size_mb": 351.803323,
+        "cpu_latency": {
+          "mean_ms": 1246.1753194401172,
+          "p95_ms": 1275.9424622990991,
+          "samples": 100
+        }
+      },
+      "classifier_int8_dynamic.onnx": {
+        "size_mb": 89.274261,
+        "cpu_latency": {
+          "mean_ms": 1549.9768534901887,
+          "p95_ms": 1601.133586501055,
+          "samples": 100
+        }
+      },
+      "classifier_int8_static.onnx": {
+        "size_mb": 90.017135,
+        "cpu_latency": {
+          "mean_ms": 653.393583189827,
+          "p95_ms": 679.3232402000285,
+          "samples": 100
+        }
+      },
+      "detector_finetuned.onnx": {
+        "size_mb": 10.623976,
+        "cpu_latency": {
+          "mean_ms": 55.170567740242404,
+          "p95_ms": 58.045645049242005,
+          "samples": 100
+        }
+      }
+    },
+    "deployed_classifier": "classifier_int8_dynamic.onnx",
+    "end_to_end_cpu": {
+      "mean_ms": 3688.835266470341,
+      "p95_ms": 5379.347718201279,
+      "samples": 100
+    }
+  },
+  "deployed_vs_fp32": {
+    "images": 500,
+    "fp32": {
+      "images": 500,
+      "top1": 0.942,
+      "top5": 0.99,
+      "mean_per_class": 0.9364468864468865,
+      "make_accuracy": 0.984,
+      "make_model_accuracy": 0.948
+    },
+    "deployed": {
+      "images": 500,
+      "top1": 0.942,
+      "top5": 0.99,
+      "mean_per_class": 0.9369047619047618,
+      "make_accuracy": 0.984,
+      "make_model_accuracy": 0.948
+    }
+  },
+  "unseen_open_set": {}
+}
