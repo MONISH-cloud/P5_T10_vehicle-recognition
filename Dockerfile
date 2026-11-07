@@ -8,6 +8,6 @@ COPY app.py .
 COPY examples examples
 COPY results results
 COPY models models
-ENV PORT=7860 GRADIO_ANALYTICS_ENABLED=False
+ENV PORT=7860 GRADIO_ANALYTICS_ENABLED=False MALLOC_ARENA_MAX=2
 EXPOSE 7860
 CMD ["python", "app.py"]

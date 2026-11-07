@@ -20,6 +20,8 @@ METRICS = ROOT / "results" / "metrics.json"
 COCO_DETECTOR = Path(os.environ.get("COCO_DETECTOR", ROOT / "models_extra" / "detector_coco.onnx"))
 BUSY_MIN_VEHICLES = 3      # this many vehicles (score >= 0.5, >= 2% of frame) makes a scene "busy"
 WEAK_BOX_SCORE = 0.5       # a default-detector box below this score that covers 2+ vehicles is a merged box
+LEAN_MODE = os.environ.get("LEAN_MODE") == "1"   # small hosts: one request at a time (see pipeline.onnx_session)
+GALLERY_MAX_SIDE = 800     # processing-step images are shrunk for display only; classification uses the full image
 NAMED_VEHICLES = 4         # in busy scenes / every-car mode, the largest this many get a name; all others get a plain box
 LEVEL_TEXT = {"full": "Make, model and year identified", "model": "Year uncertain: showing make and model only",
               "make": "Low confidence: showing make only. This may be a vehicle outside the 196 known classes, or not a car at all", "abstain": "Not confident enough to name this vehicle"}
@@ -42,14 +44,27 @@ except Exception as error:  # The UI explains the problem rather than crashing a
 
 # Multi-vehicle route: same classifier, stock COCO detector (car, bus, truck) that finds every vehicle.
 # Used when the user ticks the box, or automatically for busy scenes. Not part of the reported evaluation.
+# In LEAN_MODE the COCO detector is loaded on first use instead of at startup to save ~10-25 MB at idle.
+_MULTI_PIPELINE_LOADED = False
 MULTI_PIPELINE = None
-if PIPELINE is not None and COCO_DETECTOR.exists():
-    try:
-        MULTI_PIPELINE = copy.copy(PIPELINE)
-        MULTI_PIPELINE.detector = OnnxDetector(COCO_DETECTOR, class_ids=(2, 5, 7), confidence=0.5)
-    except Exception:
-        log.exception("Could not load the COCO detector; multi-vehicle mode is off")
-        MULTI_PIPELINE = None
+
+
+def _ensure_multi_pipeline():
+    global MULTI_PIPELINE, _MULTI_PIPELINE_LOADED
+    if _MULTI_PIPELINE_LOADED:
+        return
+    _MULTI_PIPELINE_LOADED = True
+    if PIPELINE is not None and COCO_DETECTOR.exists():
+        try:
+            MULTI_PIPELINE = copy.copy(PIPELINE)
+            MULTI_PIPELINE.detector = OnnxDetector(COCO_DETECTOR, class_ids=(2, 5, 7), confidence=0.5)
+        except Exception:
+            log.exception("Could not load the COCO detector; multi-vehicle mode is off")
+            MULTI_PIPELINE = None
+
+
+if not LEAN_MODE:
+    _ensure_multi_pipeline()
 
 
 def big_enough(detections, image) -> list:
@@ -95,11 +110,21 @@ except ImportError:
     pass
 
 
+def display_size(image) -> np.ndarray:
+    """Shrink an intermediate image for the gallery (display only)."""
+    height, width = image.shape[:2]
+    scale = GALLERY_MAX_SIDE / max(height, width)
+    if scale >= 1:
+        return image
+    return cv2.resize(image, (round(width * scale), round(height * scale)), interpolation=cv2.INTER_AREA)
+
+
 def analyse(upload, multi=False):
     if STARTUP_ERROR:
         raise gr.Error(STARTUP_ERROR)
     if upload is None:
         raise gr.Error("Please upload a photo first.")
+    _ensure_multi_pipeline()
     try:
         image = load_image(upload)
         route = "multi" if multi and MULTI_PIPELINE is not None else "default"
@@ -124,7 +149,7 @@ def analyse(upload, multi=False):
     except Exception as error:
         log.exception("Inference failed")
         raise gr.Error("Something went wrong with this image. Please try another one.") from error
-    gallery = [(np.stack([v] * 3, axis=-1) if np.ndim(v) == 2 else np.asarray(v), k) for k, v in result.intermediates.items()]
+    gallery = [(display_size(np.stack([v] * 3, axis=-1) if np.ndim(v) == 2 else np.asarray(v)), k) for k, v in result.intermediates.items()]
     quality = result.quality
     details = (f"**Brightness** {quality['brightness']:.2f} · **Contrast** {quality['contrast']:.2f} · **Sharpness** {quality['sharpness']:.0f}  \n"
                f"**Adaptive steps:** {', '.join(result.steps) or 'none needed'}  \n"
@@ -236,7 +261,7 @@ with gr.Blocks(title="Vehicle Intelligence · P5 Team T10", theme=THEME, css=ui.
         with gr.Column(elem_classes="vi-panel", min_width=320):
             gr.HTML('<div class="vi-section-title">1 · Upload a photo</div>')
             upload = gr.Image(type="filepath", label="Vehicle photo", sources=["upload", "webcam", "clipboard"], height=320)
-            multi = gr.Checkbox(False, label="Multi-vehicle detection", visible=MULTI_PIPELINE is not None,
+            multi = gr.Checkbox(False, label="Multi-vehicle detection", visible=COCO_DETECTOR.exists(),
                                 info="Switches on automatically in busy scenes.")
             run = gr.Button("Identify vehicle", variant="primary", size="lg")
             if examples:
@@ -259,6 +284,6 @@ with gr.Blocks(title="Vehicle Intelligence · P5 Team T10", theme=THEME, css=ui.
     gr.HTML(ui.FOOTER)
     run.click(analyse, [upload, multi], [output, cards, gallery, details], api_name="identify")
     compare_button.click(compare, upload, table, api_name="compare")
-demo.queue(default_concurrency_limit=2, max_size=32)
+demo.queue(default_concurrency_limit=1 if LEAN_MODE else 2, max_size=32)
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 7860)), max_file_size="15mb")

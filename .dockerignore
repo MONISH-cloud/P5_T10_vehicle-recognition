@@ -3,3 +3,8 @@ checkpoints
 results/failures
 .git
 **/__pycache__
+notebooks
+tests
+docs
+scripts
+requirements-train.txt
