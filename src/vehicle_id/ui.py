@@ -51,18 +51,15 @@ INTRO_HEAD = """
 @keyframes eg-fade{to{opacity:1}}
 @keyframes eg-spark{0%{opacity:0;transform:scale(.2)}45%{opacity:1;transform:scale(2.4)}100%{opacity:.85;transform:scale(1)}}
 @keyframes eg-rise{to{opacity:1;transform:none}}
-@media (prefers-reduced-motion: reduce){#eagle-intro{display:none}}
 </style>
 <script>
 (function(){
-  var seen=false; try{seen=sessionStorage.getItem('eagleIntroSeen')==='1'}catch(e){}
-  if(seen) return;
   function mount(){
     if(document.getElementById('eagle-intro')) return;
     var el=document.createElement('div'); el.id='eagle-intro'; el.setAttribute('role','presentation');
     el.innerHTML=__EAGLE__+'<div class="intro-word">VEHICLE&nbsp;INTELLIGENCE</div><div class="intro-sub">Fine-grained recognition · 196 classes</div>';
     document.body.appendChild(el);
-    function close(){el.classList.add('done'); try{sessionStorage.setItem('eagleIntroSeen','1')}catch(e){} setTimeout(function(){el.remove()},800)}
+    function close(){el.classList.add('done'); setTimeout(function(){el.remove()},800)}
     el.addEventListener('click',close); setTimeout(close,2700);
   }
   if(document.body) mount(); else document.addEventListener('DOMContentLoaded',mount);
